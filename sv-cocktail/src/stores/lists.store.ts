@@ -4,7 +4,9 @@ export function listStore() {
 	const lists = [];
 
 	function listAdd(title) {
-		lists.push(title);
+		if(!lists.includes(title)){
+			lists.push(title);
+		}
 	}
 
 	return {
