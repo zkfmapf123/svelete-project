@@ -11,9 +11,9 @@
 	import type { CocktailType } from 'src/types/index.type';
 	import { onMount } from 'svelte';
 	import { listStore } from '../stores/lists.store';
-import { cocktailCaching } from '../stores/cocktail.cache.store';
+	import { cocktailCaching } from '../stores/cocktail.cache.store';
 	const cocktailLists = listStore();
-    const cocktailCaches = cocktailCaching()
+	const cocktailCaches = cocktailCaching();
 
 	export let searchLists = undefined;
 	export let cocktail: CocktailType = {
@@ -25,7 +25,7 @@ import { cocktailCaching } from '../stores/cocktail.cache.store';
 	const onClickEvent = async () => {
 		const cocktailRecieps = await load();
 		await writeStoere(cocktail.cocktailTitle);
-        await cocktailCaches.addCocktail(cocktailRecieps)
+		await cocktailCaches.addCocktail(cocktailRecieps);
 
 		cocktail = {
 			...cocktailRecieps
@@ -37,11 +37,11 @@ import { cocktailCaching } from '../stores/cocktail.cache.store';
 		searchLists = cocktailLists.lists;
 	};
 
-	const handleChangeCocktailItem = async(cocktailTitle) => {
-        const selectCocktail = await cocktailCaches.selectCocktail(cocktailTitle)
-        cocktail = {
-            ...selectCocktail
-        }
+	const handleChangeCocktailItem = async (cocktailTitle: string) => {
+		const selectCocktail = await cocktailCaches.selectCocktail(cocktailTitle);
+		cocktail = {
+			...selectCocktail
+		};
 	};
 
 	// useEffect({},[])
@@ -54,11 +54,11 @@ import { cocktailCaching } from '../stores/cocktail.cache.store';
 	<!-- search nav bar-->
 	<div class="nav-container">
 		<h1>Search list</h1>
-        {#if searchLists}
-		    {#each searchLists as item,index}
-			    <button class="list-button" on:click={()=>handleChangeCocktailItem(item)}>{item}</button>
-		    {/each}
-        {/if}
+		{#if searchLists}
+			{#each searchLists as item, _}
+				<button class="list-button" on:click={() => handleChangeCocktailItem(item)}>{item}</button>
+			{/each}
+		{/if}
 	</div>
 	<!-- main view -->
 	<div class="header">
@@ -68,7 +68,7 @@ import { cocktailCaching } from '../stores/cocktail.cache.store';
 	<div class="main">
 		<h1 id="item-title">{cocktail.cocktailTitle}</h1>
 
-		{#each cocktail.subMenus as { subMenuName, subMenuAmount }, i}
+		{#each cocktail.subMenus as { subMenuName, subMenuAmount }, _}
 			<p class="list">{subMenuName}, {subMenuAmount}</p>
 		{/each}
 
@@ -92,8 +92,8 @@ import { cocktailCaching } from '../stores/cocktail.cache.store';
 
 	.nav-container {
 		position: absolute;
-        display: flex;
-        flex-direction: column;
+		display: flex;
+		flex-direction: column;
 		width: 300px;
 		min-height: 300px;
 		right: 0;
@@ -109,19 +109,18 @@ import { cocktailCaching } from '../stores/cocktail.cache.store';
 		font-weight: bold;
 	}
 
-    .nav-container h1 {
-        text-align: center;
-    }
+	.nav-container h1 {
+		text-align: center;
+	}
 
-    .list-button{
-        border: 0;
-        margin: 10px;
-        background-color: white;
-        text-align: left;
-    }
+	.list-button {
+		border: 0;
+		margin: 10px;
+		background-color: white;
+		text-align: left;
+	}
 
-    .list-button:hover{
-        opacity: 0.5;
-    }
-
+	.list-button:hover {
+		opacity: 0.5;
+	}
 </style>
